@@ -18,13 +18,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(
-            color: Constants().greyColor(),
+            color: Constants().blueColor(),
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(
-            color: Constants().blackColor(),
+            color: Constants().pinkColor(),
           ),
         ),
         label: Text(widget.hintText),

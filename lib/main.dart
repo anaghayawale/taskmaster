@@ -14,9 +14,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        body: Center(child: CustomTextField(hintText: 'Email')),
-      ),
     );
   }
 }

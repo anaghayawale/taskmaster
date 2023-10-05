@@ -15,7 +15,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: widget.hintText == 'Password' ? true : false,
+      obscureText: widget.hintText == 'Password' || widget.hintText == 'Confirm Password' ? true : false,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(12)),

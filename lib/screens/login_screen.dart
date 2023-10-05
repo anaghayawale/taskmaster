@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taskmaster/utils/constants.dart';
 import 'package:taskmaster/widgets/custom_button.dart';
+import 'package:taskmaster/widgets/custom_snackbar.dart';
 import 'package:taskmaster/widgets/custom_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,6 +14,18 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  void _login() {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      CustomSnackBar(
+        snackbarText: 'Please enter all the fields',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 25.0),
                 CustomTextField(hintText: 'Email', controller: emailController),
                 const SizedBox(height: 10.0),
-                CustomTextField(hintText: 'Password', controller: passwordController),
+                CustomTextField(
+                    hintText: 'Password', controller: passwordController),
                 const SizedBox(height: 10.0),
                 CustomButton(
                   buttonName: 'Login',
                   buttonColor: Constants().kLoginButtonColor(),
                   buttonTextColor: Constants().kLoginButtonTextColor(),
-                  onPressed: () {},
+                  onPressed: _login,
                 ),
                 const SizedBox(height: 10.0),
                 Text(

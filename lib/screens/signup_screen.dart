@@ -75,12 +75,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         fontSize: 20.0,
                       ),
                     ),
-                    Text(
-                      'Log in',
-                      style: TextStyle(
-                        color: Constants().pinkColor(),
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+                    InkWell(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Log in',
+                        style: TextStyle(
+                          color: Constants().pinkColor(),
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

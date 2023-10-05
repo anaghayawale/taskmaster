@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmaster/screens/login_screen.dart';
+import 'package:taskmaster/screens/signup_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      initialRoute: '/login',
+      routes: routes,
     );
   }
 }
+
+final Map<String, WidgetBuilder> routes = {
+  '/login': (context) => const LoginScreen(),
+  '/signup': (context) => const SignUpScreen(),
+};

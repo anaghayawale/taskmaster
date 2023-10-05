@@ -11,6 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +41,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 25.0),
-                const CustomTextField(hintText: 'Email'),
+                CustomTextField(hintText: 'Email', controller: emailController),
                 const SizedBox(height: 10.0),
-                const CustomTextField(hintText: 'Password'),
+                CustomTextField(hintText: 'Password', controller: passwordController),
                 const SizedBox(height: 10.0),
                 CustomButton(
                   buttonName: 'Login',
                   buttonColor: Constants().kLoginButtonColor(),
                   buttonTextColor: Constants().kLoginButtonTextColor(),
+                  onPressed: () {},
                 ),
                 const SizedBox(height: 10.0),
                 Text(

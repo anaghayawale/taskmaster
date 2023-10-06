@@ -4,6 +4,8 @@ import 'package:taskmaster/utils/constants.dart';
 import 'package:taskmaster/widgets/custom_button.dart';
 import 'package:taskmaster/widgets/custom_snackbar.dart';
 import 'package:taskmaster/widgets/custom_textfield.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,12 +15,17 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  bool isButtonDisabled = false;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  void _signup() {
+  void _signup() async {
+    if (isButtonDisabled) return;
+    setState(() {
+      isButtonDisabled = true;
+    });
     String name = nameController.text.trim();
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
@@ -32,21 +39,92 @@ class _SignUpScreenState extends State<SignUpScreen> {
         snackbarText: 'Please enter all the fields',
         snackbarTextColor: Constants().kErrorColor(),
       ).showSnackBar(context);
-    } else if (!EmailValidator.validate(email)) {
+      setState(() {
+        isButtonDisabled = false;
+      });
+      return;
+    }
+    if (!EmailValidator.validate(email)) {
       CustomSnackBar(
         snackbarText: 'Please enter a valid email',
         snackbarTextColor: Constants().kErrorColor(),
       ).showSnackBar(context);
-    } else if (password.length < 6) {
+      setState(() {
+        isButtonDisabled = false;
+      });
+      return;
+    }
+    if (password.length < 6) {
       CustomSnackBar(
         snackbarText: 'Password must be at least 6 characters',
         snackbarTextColor: Constants().kErrorColor(),
       ).showSnackBar(context);
-    } else if (password != confirmPassword) {
+      setState(() {
+        isButtonDisabled = false;
+      });
+      return;
+    }
+    if (password != confirmPassword) {
       CustomSnackBar(
         snackbarText: 'Passwords do not match',
         snackbarTextColor: Constants().kErrorColor(),
       ).showSnackBar(context);
+      setState(() {
+        isButtonDisabled = false;
+      });
+      return;
+    }
+
+    try {
+      await signUpUser(name, email, password);
+      setState(() {
+        isButtonDisabled = false;
+      });
+    } catch (error) {
+      CustomSnackBar(
+        snackbarText: error.toString(),
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+      setState(() {
+        isButtonDisabled = false;
+      });
+    }
+  }
+
+  Future signUpUser(String name, String email, String password) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+      'POST',
+      Uri.parse('https://taskmasterapp.vercel.app/api/signup'),
+    );
+
+    request.body = jsonEncode({
+      "name": name,
+      "email": email,
+      "password": password,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var responseBody = await response.stream.bytesToString();
+      var data = jsonDecode(responseBody);
+
+      if (data['success']) {
+        CustomSnackBar(
+          snackbarText: 'Signed up successfully',
+          snackbarTextColor: Constants().kSuccessColor(),
+        ).showSnackBar(context);
+        Navigator.pop(context);
+      } else {
+        CustomSnackBar(
+          snackbarText: '${data['message']}',
+          snackbarTextColor: Constants().kErrorColor(),
+        ).showSnackBar(context);
+        print(data['message']);
+      }
     }
   }
 

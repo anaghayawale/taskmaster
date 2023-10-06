@@ -4,6 +4,8 @@ import 'package:taskmaster/widgets/custom_button.dart';
 import 'package:taskmaster/widgets/custom_snackbar.dart';
 import 'package:taskmaster/widgets/custom_textfield.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,6 +35,54 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if (password.length < 6) {
       CustomSnackBar(
         snackbarText: 'Password must be at least 6 characters',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    } else {
+      loginUser(email, password);
+    }
+  }
+
+  Future<void> loginUser(String email, String password) async {
+    try {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Cookie':
+            'taskmastertoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTk4MDQ1MzMzZDZhYjkxZDBjZDYyZSIsImlhdCI6MTY5NjU4MTEyOX0.CDigBgGA_Zo9pjKdyFGOuZSJiIlbGOlf6qW4jQxGI4U'
+      };
+      var request = http.Request(
+        'POST',
+        Uri.parse('https://taskmasterapp.vercel.app/api/login'),
+      );
+
+      request.body = jsonEncode({
+        "email": email,
+        "password": password,
+      });
+
+      request.headers.addAll(headers);
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var data = jsonDecode(responseBody);
+
+        if (data['success']) {
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          CustomSnackBar(
+            snackbarText: data['error'],
+            snackbarTextColor: Constants().kErrorColor(),
+          ).showSnackBar(context);
+        }
+      } else {
+        CustomSnackBar(
+          snackbarText: 'Unable to login.Try again',
+          snackbarTextColor: Constants().kErrorColor(),
+        ).showSnackBar(context);
+      }
+    } catch (error) {
+      CustomSnackBar(
+        snackbarText: 'Error: $error',
         snackbarTextColor: Constants().kErrorColor(),
       ).showSnackBar(context);
     }

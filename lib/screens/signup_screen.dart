@@ -1,6 +1,8 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmaster/utils/constants.dart';
 import 'package:taskmaster/widgets/custom_button.dart';
+import 'package:taskmaster/widgets/custom_snackbar.dart';
 import 'package:taskmaster/widgets/custom_textfield.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -15,6 +17,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  void _signup() {
+    String name = nameController.text.trim();
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String confirmPassword = confirmPasswordController.text.trim();
+
+    if (name.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      CustomSnackBar(
+        snackbarText: 'Please enter all the fields',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    } else if (!EmailValidator.validate(email)) {
+      CustomSnackBar(
+        snackbarText: 'Please enter a valid email',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    } else if (password.length < 6) {
+      CustomSnackBar(
+        snackbarText: 'Password must be at least 6 characters',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    } else if (password != confirmPassword) {
+      CustomSnackBar(
+        snackbarText: 'Passwords do not match',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         buttonName: 'Sign up',
                         buttonColor: Constants().kLoginButtonColor(),
                         buttonTextColor: Constants().kLoginButtonTextColor(),
-                        onPressed: () {},
+                        onPressed: _signup,
                       ),
                       const SizedBox(height: 10.0),
                       Row(

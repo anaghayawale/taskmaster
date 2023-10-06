@@ -3,6 +3,7 @@ import 'package:taskmaster/utils/constants.dart';
 import 'package:taskmaster/widgets/custom_button.dart';
 import 'package:taskmaster/widgets/custom_snackbar.dart';
 import 'package:taskmaster/widgets/custom_textfield.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,6 +23,16 @@ class _LoginScreenState extends State<LoginScreen> {
     if (email.isEmpty || password.isEmpty) {
       CustomSnackBar(
         snackbarText: 'Please enter all the fields',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    } else if (!EmailValidator.validate(email)) {
+      CustomSnackBar(
+        snackbarText: 'Please enter a valid email',
+        snackbarTextColor: Constants().kErrorColor(),
+      ).showSnackBar(context);
+    } else if (password.length < 6) {
+      CustomSnackBar(
+        snackbarText: 'Password must be at least 6 characters',
         snackbarTextColor: Constants().kErrorColor(),
       ).showSnackBar(context);
     }

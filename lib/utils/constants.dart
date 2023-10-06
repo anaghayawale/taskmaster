@@ -7,4 +7,11 @@ class Constants{
   blackColor() => const Color.fromARGB(255, 0, 0, 0);
   greyColor() => const Color.fromARGB(255, 128, 128, 128);
   whiteColor() => const Color.fromARGB(255, 255, 255, 255);
+  blueColor() => const Color.fromARGB(255, 122, 120, 189);
+  pinkColor() => const Color.fromARGB(255, 232, 64, 120);
+  
+  kErrorColor() => const Color.fromARGB(255, 255, 0, 0);
+
+  kLoginButtonColor() => const Color.fromARGB(255, 232, 64, 120);
+  kLoginButtonTextColor() => const Color.fromARGB(255, 255, 255, 255);
 }

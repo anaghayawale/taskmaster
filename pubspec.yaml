@@ -65,6 +65,8 @@ flutter:
     - assets/images/clipboard.png
     - assets/images/cornerImage.png
     - assets/images/circleImage.png
+    - assets/images/pinkBox.png
+    - assets/images/yellowBox.png
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
       'POST',
-      Uri.parse('https://taskmasterapp.vercel.app/api/signup'),
+      Uri.parse('${Constants.apiBaseUrl}signup'),
     );
 
     request.body = jsonEncode({

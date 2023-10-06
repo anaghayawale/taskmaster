@@ -15,10 +15,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isLoading = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void _login() {
+  void _login() async {
+    setState(() {
+    isLoading = true;
+  });
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
@@ -38,8 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
         snackbarTextColor: Constants().kErrorColor(),
       ).showSnackBar(context);
     } else {
-      loginUser(email, password);
+      await loginUser(email, password);
     }
+    
   }
 
   Future<void> loginUser(String email, String password) async {
@@ -51,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
       };
       var request = http.Request(
         'POST',
-        Uri.parse('https://taskmasterapp.vercel.app/api/login'),
+        Uri.parse('${Constants.apiBaseUrl}login'),
       );
 
       request.body = jsonEncode({

@@ -5,15 +5,13 @@ class CustomButton extends StatefulWidget {
       {super.key,
       required this.buttonName,
       required this.buttonColor,
-      required this.buttonTextColor, 
+      required this.buttonTextColor,
       required this.onPressed});
 
   final String buttonName;
   final Color buttonColor;
   final Color buttonTextColor;
   final VoidCallback onPressed;
-
-  
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
@@ -25,7 +23,7 @@ class _CustomButtonState extends State<CustomButton> {
     return InkWell(
       onTap: widget.onPressed,
       child: Container(
-        width: double.infinity,
+        width: widget.buttonName == 'Logout' ? 100 : double.infinity,
         height: 50,
         decoration: BoxDecoration(
             color: widget.buttonColor,

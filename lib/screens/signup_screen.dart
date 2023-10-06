@@ -53,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     controller: confirmPasswordController),
                 const SizedBox(height: 10.0),
                 CustomButton(
-                  buttonName: 'Login',
+                  buttonName: 'Sign up',
                   buttonColor: Constants().kLoginButtonColor(),
                   buttonTextColor: Constants().kLoginButtonTextColor(),
                   onPressed: () {},
@@ -69,18 +69,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already have an account?',
+                      'Already have an account? ',
                       style: TextStyle(
                         color: Constants().blueColor(),
                         fontSize: 20.0,
                       ),
                     ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Log in',
+                        'Login',
                         style: TextStyle(
                           color: Constants().pinkColor(),
                           fontSize: 20.0,
